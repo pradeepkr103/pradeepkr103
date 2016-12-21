@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Saving Lives Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Location Interface Implementations for Callbacks
+FusedLocationProviderApi needs GoogleApiClient
+App setup TopApp.java init
+Continuous Location Update
+Debugging with DDMS
+
+
+Ex: fused Location Provide">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Saving Lives Blog">
+<meta property="og:url" content="https://pradeepkr103.github.io/android/31c Android Location,GPS Trackers and Map Tracking/index.html">
+<meta property="og:site_name" content="Saving Lives Blog">
+<meta property="og:description" content="Location Interface Implementations for Callbacks
+FusedLocationProviderApi needs GoogleApiClient
+App setup TopApp.java init
+Continuous Location Update
+Debugging with DDMS
+
+
+Ex: fused Location Provide">
+<meta property="og:updated_time" content="2016-12-20T10:19:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Saving Lives Blog">
+<meta name="twitter:description" content="Location Interface Implementations for Callbacks
+FusedLocationProviderApi needs GoogleApiClient
+App setup TopApp.java init
+Continuous Location Update
+Debugging with DDMS
+
+
+Ex: fused Location Provide">
+  
+    <link rel="alternate" href="/atom.xml" title="Saving Lives Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Saving Lives Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">For the emerging 5 Billion global citizens.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://pradeepkr103.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-android/31c Android Location,GPS Trackers and Map Tracking" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/android/31c Android Location,GPS Trackers and Map Tracking/" class="article-date">
+  <time datetime="2016-12-20T09:30:56.000Z" itemprop="datePublished">2016-12-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- MarkdownTOC -->
+<ul>
+<li>Location Interface Implementations for Callbacks<ul>
+<li>FusedLocationProviderApi needs GoogleApiClient</li>
+<li>App setup TopApp.java init</li>
+<li>Continuous Location Update</li>
+<li>Debugging with DDMS</li>
+</ul>
+</li>
+<li>Ex: fused Location Provider on Request &amp; On Location Change Continuous</li>
+<li>Android GPS Trackers and Map Tracking<ul>
+<li>open-gpstracker</li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h1 id="Location-Interface-Implementations-for-Callbacks"><a href="#Location-Interface-Implementations-for-Callbacks" class="headerlink" title="Location Interface Implementations for Callbacks"></a>Location Interface Implementations for Callbacks</h1><h2 id="FusedLocationProviderApi-needs-GoogleApiClient"><a href="#FusedLocationProviderApi-needs-GoogleApiClient" class="headerlink" title="FusedLocationProviderApi needs GoogleApiClient"></a>FusedLocationProviderApi needs GoogleApiClient</h2><p>GoogleApiClient - FusedLocationProviderApi requires the GoogleApiClient instance to get the Location and it can be obtained as below.</p>
+<pre><code>googleApiClient = new GoogleApiClient.Builder(locationActivity)
+            .addApi(LocationServices.API)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .build();
+</code></pre><p>Instantiating the GoogleApiClient should be done in onCreate of the application Activity.</p>
+<ul>
+<li>googleApiClient.connect() should be done in onStart and disconnect() in onStop.</li>
+</ul>
+<p>When the GoogleApiClient is connected successfully, onConnected(Bundle) callback will be called. There we should register with LocationListener for location updates as - </p>
+<pre><code>LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+</code></pre><p>The following interfaces should be implemented to get the location update.</p>
+<ul>
+<li>onConnected(Bundle) callback</li>
+<li>LocationListener provides call back for location change through onLocationChanged.</li>
+<li>GoogleApiClient.ConnectionCallbacks provides call back for GoogleApiClient onConnected.</li>
+<li>GoogleApiClient.OnConnectionFailedListener provides call back for GoogleApiClient onConnectionFailed.</li>
+</ul>
+<h2 id="App-setup-TopApp-java-init"><a href="#App-setup-TopApp-java-init" class="headerlink" title="App setup TopApp.java init"></a>App setup TopApp.java init</h2><pre><code>// check whether this device has Google Play Services Installed - i.e. Play Store, etc ..
+int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+if (resp == ConnectionResult.SUCCESS) {
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+            .addApi(LocationServices.API)
+            .addConnectionCallbacks(connectionAddListener)
+            .addOnConnectionFailedListener(connectionFailedListener)
+            .build();
+    mGoogleApiClient.connect();
+} else {
+    Log.e(TAG, &quot;Your Device doesn&apos;t support Google Play Services.&quot;);
+}
+</code></pre><ul>
+<li><p>TopApp.java init - Get the Location, Implement “LocationListener” of GoogleServices API with the below methods.</p>
+<p>  // For getting the last known location, we could use GoogleServices API itself.<br>  // Create the LocationRequest object<br>  mLocationRequest = LocationRequest.create()</p>
+<pre><code>.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+.setInterval(10 * 1000)        // 10 seconds, in milliseconds
+.setFastestInterval(1 * 1000); // 1 second, in milliseconds
+</code></pre><p>  Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);<br>  if (location == null) {</p>
+<pre><code>LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+</code></pre><p>  } else {</p>
+<pre><code>currentLatitude = location.getLatitude();
+currentLongitude = location.getLongitude();
+</code></pre><p>  }</p>
+<p>  // Location Listeners<br>  @Override public void onLocationChanged(Location location) {</p>
+<pre><code>currentLatitude = location.getLatitude();
+currentLongitude = location.getLongitude();
+</code></pre><p>  }</p>
+<p>  // Now we will add both Success and Fail Listeners.<br>  private GoogleApiClient.ConnectionCallbacks connectionAddListener =</p>
+<pre><code>new GoogleApiClient.ConnectionCallbacks() {
+    @Override public void onConnected(Bundle bundle) {}
+    @Override public void onConnectionSuspended(int i) {}
+</code></pre><p>  };<br>  private GoogleApiClient.OnConnectionFailedListener connectionFailedListener =</p>
+<pre><code>new GoogleApiClient.OnConnectionFailedListener() {
+    @Override public void onConnectionFailed(ConnectionResult connectionResult) { }
+</code></pre><p>  };</p>
+</li>
+<li><p>TopApp.java init - Adding Geofencing</p>
+<p>  // Create a Geofence list by adding all fences you want to track<br>  public void createGeofences(double latitude, double longitude) {</p>
+<pre><code>String id = UUID.randomUUID().toString();
+Geofence fence = new Geofence.Builder()
+        .setRequestId(id)
+        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+        .setCircularRegion(latitude, longitude, 200) // Try changing your radius
+        .setExpirationDuration(Geofence.NEVER_EXPIRE)
+        .build();
+mGeofenceList.add(fence);
+</code></pre><p>  }<br>  // Create Geofencing Request and trigger<br>  private GeofencingRequest getGeofencingRequest() {</p>
+<pre><code>GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+builder.addGeofences(mGeofenceList);
+return builder.build();
+</code></pre><p>  }</p>
+<p>  // Need a class to Listen to…right… So we will create an Intent Service and add the Pending Intent to it.<br>  private PendingIntent getGeofencePendingIntent() {</p>
+<pre><code>// Reuse the PendingIntent if we already have it.
+if (mGeofencePendingIntent != null) {
+    return mGeofencePendingIntent;
+}
+Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+// We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling addGeofences() and removeGeofences().
+return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+</code></pre><p>  }</p>
+</li>
+<li><p>GeofenceTransitionsIntentService.java is the IntentService that will listen and gets added </p>
+<p>  import android.app.IntentService;<br>  import android.app.Notification;<br>  import android.app.NotificationManager;<br>  import android.app.PendingIntent;<br>  import android.content.Context;<br>  import android.content.Intent;<br>  import android.support.v4.app.NotificationCompat;<br>  import android.util.Log;<br>  import com.google.android.gms.location.Geofence;<br>  import com.google.android.gms.location.GeofencingEvent;</p>
+<p>  public class GeofenceTransitionsIntentService extends IntentService {</p>
+<pre><code>private static final String TAG = &quot;GeofenceTransitions&quot;;
+public GeofenceTransitionsIntentService() {
+    super(&quot;GeofenceTransitionsIntentService&quot;);
+}
+@Override protected void onHandleIntent(Intent intent) {
+    GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+    if (geofencingEvent.hasError()) {
+        Log.e(TAG, &quot;Goefencing Error &quot; + geofencingEvent.getErrorCode());
+        return;
+    }
+    // Get the transition type.
+    int geofenceTransition = geofencingEvent.getGeofenceTransition();
+    if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+        showNotification(&quot;Entered&quot;, &quot;Entered the Location&quot;);
+    } else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+        showNotification(&quot;Exited&quot;, &quot;Exited the Location&quot;);
+    } else {
+        showNotification(&quot;Error&quot;, &quot;Error&quot;);
+}
+
+public void showNotification(String text, String bigText) {
+    // 1. Create a NotificationManager
+    NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+    // 2. Create a PendingIntent for AllGeofencesActivity
+    Intent intent = new Intent(this, MainActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    PendingIntent pendingNotificationIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+      // 3. Create and send a notification
+    Notification notification = new NotificationCompat.Builder(this)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(text)
+            .setContentText(text)
+            .setContentIntent(pendingNotificationIntent)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build();
+    notificationManager.notify(0, notification);
+}
+</code></pre><p>  }</p>
+</li>
+</ul>
+<h2 id="Continuous-Location-Update"><a href="#Continuous-Location-Update" class="headerlink" title="Continuous Location Update"></a>Continuous Location Update</h2><ul>
+<li>In the callbacks for onConnected() as well as onResume() call startLocationUpdates()</li>
+</ul>
+<ul>
+<li>Which<br>  protected void startLocationUpdates() {<pre><code>PendingResult&lt;Status&gt; pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+        mGoogleApiClient, mLocationRequest, this);
+Log.d(TAG, &quot;Location update started ..............: &quot;);
+</code></pre>  }</li>
+</ul>
+<h2 id="Debugging-with-DDMS"><a href="#Debugging-with-DDMS" class="headerlink" title="Debugging with DDMS"></a>Debugging with DDMS</h2><ul>
+<li>DDMS lets you set the location for emulator even if GPS not on device<br>  Select your emulator device<br>  Select the tab named emulator control<br>  In ‘Location Controls’ panel, ‘Manual’ tab, give the Longitude and Latitude as input and ‘Send’.</li>
+</ul>
+<p>Note: In some AVDs this may not work. Its a widely reported defect. </p>
+<p>You can use any other AVD like Google Nexus to test in the emulator like WVGA AVDs. I used “4 WVGA API 21” virtual device in emulator to test it. It is also working on a real device and I tested it in Panasonic P81.</p>
+<h1 id="Ex-fused-Location-Provider-on-Request-amp-On-Location-Change-Continuous"><a href="#Ex-fused-Location-Provider-on-Request-amp-On-Location-Change-Continuous" class="headerlink" title="Ex: fused Location Provider on Request &amp; On Location Change Continuous"></a>Ex: fused Location Provider on Request &amp; On Location Change Continuous</h1><pre><code>~ devu/geo*/aFusedPKJ..
+Press to show Current Loc
+&lt;Update current Location&gt;
+
+Time
+Lat:
+Long
+Accuracy
+Provider: fused
+</code></pre><ul>
+<li><p>Manifest<br>  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission></p>
+  <application ..="" <activity=""><br>      <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"><br>  </meta-data></application>
+</li>
+<li><p>app/build.gradle<br>  ..<br>  dependencies {</p>
+<pre><code>...
+compile &apos;com.google.android.gms:play-services:6.5.87&apos;
+</code></pre><p>  }</p>
+</li>
+<li><p>Main Activity</p>
+<p>  package com.gomobilefirst.apkjfusedlocation;</p>
+<p>  import android.location.Location;<br>  import com.google.android.gms.common.ConnectionResult;<br>  import com.google.android.gms.common.GooglePlayServicesUtil;<br>  import com.google.android.gms.common.api.GoogleApiClient;<br>  import com.google.android.gms.common.api.PendingResult;<br>  import com.google.android.gms.location.LocationListener;<br>  import com.google.android.gms.location.LocationRequest;<br>  import com.google.android.gms.location.LocationServices;<br>  import com.google.android.gms.common.api.Status;<br>  import java.text.DateFormat;<br>  import java.util.Date;</p>
+<p>  public class MainActivity extends AppCompatActivity  implements</p>
+<pre><code>    LocationListener,
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {
+
+//---- UI INtegration (on button update GPS info on UI) ----
+Button btnFusedLocation;
+TextView tvLocation;
+@Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main_activity);
+    tvLocation = (TextView) findViewById(R.id.tvLocation);
+    btnFusedLocation = (Button) findViewById(R.id.btnShowLocation);
+    btnFusedLocation.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View arg0) {
+            updateUI();
+        }
+    });
+    setupGoogleLocationApiClient();
+}
+private void updateUI() {
+    Log.d(TAG, &quot;UI update initiated .............&quot;);
+    if (null != mCurrentLocation) {
+        String lat = String.valueOf(mCurrentLocation.getLatitude());
+        String lng = String.valueOf(mCurrentLocation.getLongitude());
+        tvLocation.setText(&quot;At Time: &quot; + mLastUpdateTime + &quot;\n&quot; +
+                &quot;Latitude: &quot; + lat + &quot;\n&quot; +
+                &quot;Longitude: &quot; + lng + &quot;\n&quot; +
+                &quot;Accuracy: &quot; + mCurrentLocation.getAccuracy() + &quot;\n&quot; +
+                &quot;Provider: &quot; + mCurrentLocation.getProvider());
+    } else {
+        Log.d(TAG, &quot;location is null ...............&quot;);
+    }
+}
+</code></pre></li>
+</ul>
+<pre><code>    //---- LOC SETUP &amp; API integrations ---
+    private static final String TAG = &quot;LocationActivity&quot;;
+    private static final long INTERVAL = 1000 * 10;
+    private static final long FASTEST_INTERVAL = 1000; //1 secs
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mCurrentLocation;
+    String mLastUpdateTime;
+    String lat,lon;
+
+    private void setupGoogleLocationApiClient() {
+        //show error dialog if GoolglePlayServices not available
+        if (!isGooglePlayServicesAvailable()) {
+            finish();
+        }
+            /* v1 // createLocationRequest
+                mLocationRequest = new LocationRequest();
+                mLocationRequest.setInterval(INTERVAL);
+                mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                buildGoogleApiClient();
+            */
+        //v2 build client on create ui - then do rest onConnected ..
+        buildGoogleApiClient();
+
+    }
+    synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+    private boolean isGooglePlayServicesAvailable() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status) {
+            return true;
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
+    protected void startLocationUpdates() {
+            /* //v1
+            PendingResult&lt;Status&gt; pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+            Log.d(TAG, &quot;Location update started ..............: &quot;);
+            */
+
+        //V2
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(INTERVAL);
+        mLocationRequest.setInterval(FASTEST_INTERVAL); // Update location every second
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+        mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mCurrentLocation != null) {
+            lat = String.valueOf(mCurrentLocation.getLatitude());
+            lon = String.valueOf(mCurrentLocation.getLongitude());
+
+        }
+    }
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+        Log.d(TAG, &quot;Location update stopped .......................&quot;);
+    }
+
+
+    //---- GEOLOC CYCLE HOOKS ---
+    @Override public void onConnected(Bundle bundle) {
+        startLocationUpdates(); //v1
+    }
+    @Override public void onConnectionSuspended(int i) {
+    }
+    @Override public void onConnectionFailed(ConnectionResult connectionResult) {
+        //? what if it keeps failing = maybe only retry few x
+        buildGoogleApiClient();
+        Log.d(TAG, &quot;Connection failed: &quot; + connectionResult.toString());
+    }
+    @Override public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        updateUI();
+    }
+
+    //---- ACTIVITY LIFECYCLE - to prevent sensor being on all ---
+    @Override public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+    @Override public void onResume() {
+        super.onResume();
+        if (mGoogleApiClient.isConnected()) {
+            startLocationUpdates();
+            Log.d(TAG, &quot;Location update resumed .....................&quot;);
+        }
+    }
+    @Override protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+    @Override public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+        Log.d(TAG, &quot;isConnected ...............: &quot; + mGoogleApiClient.isConnected());
+    }
+}
+</code></pre><h1 id="Android-GPS-Trackers-and-Map-Tracking"><a href="#Android-GPS-Trackers-and-Map-Tracking" class="headerlink" title="Android GPS Trackers and Map Tracking"></a>Android GPS Trackers and Map Tracking</h1><h2 id="open-gpstracker"><a href="#open-gpstracker" class="headerlink" title="open-gpstracker"></a>open-gpstracker</h2><p>An application that can track your travels of your Android by storing your GPS locations. Draws the route real-time on either Google or OSM maps. Uses coloring to render speeds. Share though GPX, KMZ formats or summarize with a tweet. Take notes on your track with pictures, video, audio and text.</p>
+<p><a href="http://twitter.com/rcgroot" target="_blank" rel="external">http://twitter.com/rcgroot</a></p>
+<p>For a demo on using Breadcrumbs integration: <a href="http://app.gobreadcrumbs.com/getting-started-android.html" target="_blank" rel="external">http://app.gobreadcrumbs.com/getting-started-android.html</a></p>
+<p>For help on preparing off-line maps checkout: <a href="http://code.google.com/p/open-gpstracker/wiki/OfflineMaps" target="_blank" rel="external">http://code.google.com/p/open-gpstracker/wiki/OfflineMaps</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://pradeepkr103.github.io/android/31c Android Location,GPS Trackers and Map Tracking/" data-id="ciwyar8xx0003fvsp83b281oc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/android/31h Google Places, Local Based/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/android/31g Android Map Paths, Directions, GPS Trackers/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Recipes-ViewManager/">Android, Recipes, ViewManager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ecommerce-Posts-Directory/">Ecommerce, Posts Directory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElasticSearch-Logstash-Kibana-ELK-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">ElasticSearch, Logstash, Kibana, ELK, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Google-Analytics-Web-Frontend/">Google, Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Google-Yahoo-Bing-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Google, Yahoo, Bing, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mobile-Analytics-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Mobile Analytics, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Personalizing-Web-Experience-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Personalizing, Web Experience, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Piwik-Google-Analytics-Web-Frontend/">Piwik, Google, Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/savinglives-hackathons-wins/">savinglives, hackathons, wins</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android-Recipes-ViewManager/" style="font-size: 10px;">Android, Recipes, ViewManager</a> <a href="/tags/Ecommerce-Posts-Directory/" style="font-size: 10px;">Ecommerce, Posts Directory</a> <a href="/tags/ElasticSearch-Logstash-Kibana-ELK-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 10px;">ElasticSearch, Logstash, Kibana, ELK, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 20px;">Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Google-Analytics-Web-Frontend/" style="font-size: 10px;">Google, Analytics, Web, Frontend</a> <a href="/tags/Google-Yahoo-Bing-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 20px;">Google, Yahoo, Bing, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Mobile-Analytics-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 10px;">Mobile Analytics, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Personalizing-Web-Experience-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 10px;">Personalizing, Web Experience, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Piwik-Google-Analytics-Web-Frontend/" style="font-size: 10px;">Piwik, Google, Analytics, Web, Frontend</a> <a href="/tags/savinglives-hackathons-wins/" style="font-size: 10px;">savinglives, hackathons, wins</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/android/31a Setup Google Play Services API projects/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31h Google Places, Local Based/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31c Android Location,GPS Trackers and Map Tracking/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31g Android Map Paths, Directions, GPS Trackers/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31b Android Maps v2 Markers, Current Location/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Pradeep Kumar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

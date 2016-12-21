@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Saving Lives Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Setup Google Play Services API projects
+Setup IDE and Build
+Setup Libs
+Setup Permissions
+Setup Google Maps Key - Simple
+Setup GPlay Services - API Keys - More Involved
+Attribution Needs
+
+
+
+
+Setup Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Saving Lives Blog">
+<meta property="og:url" content="https://pradeepkr103.github.io/android/31a Setup Google Play Services API projects/index.html">
+<meta property="og:site_name" content="Saving Lives Blog">
+<meta property="og:description" content="Setup Google Play Services API projects
+Setup IDE and Build
+Setup Libs
+Setup Permissions
+Setup Google Maps Key - Simple
+Setup GPlay Services - API Keys - More Involved
+Attribution Needs
+
+
+
+
+Setup Go">
+<meta property="og:updated_time" content="2016-12-20T18:27:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Saving Lives Blog">
+<meta name="twitter:description" content="Setup Google Play Services API projects
+Setup IDE and Build
+Setup Libs
+Setup Permissions
+Setup Google Maps Key - Simple
+Setup GPlay Services - API Keys - More Involved
+Attribution Needs
+
+
+
+
+Setup Go">
+  
+    <link rel="alternate" href="/atom.xml" title="Saving Lives Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Saving Lives Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">For the emerging 5 Billion global citizens.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://pradeepkr103.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-android/31a Setup Google Play Services API projects" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/android/31a Setup Google Play Services API projects/" class="article-date">
+  <time datetime="2016-12-20T10:05:11.000Z" itemprop="datePublished">2016-12-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- MarkdownTOC -->
+<ul>
+<li>Setup Google Play Services API projects<ul>
+<li>Setup IDE and Build</li>
+<li>Setup Libs</li>
+<li>Setup Permissions</li>
+<li>Setup Google Maps Key - Simple</li>
+<li>Setup GPlay Services - API Keys - More Involved</li>
+<li>Attribution Needs</li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h1 id="Setup-Google-Play-Services-API-projects"><a href="#Setup-Google-Play-Services-API-projects" class="headerlink" title="Setup Google Play Services API projects"></a>Setup Google Play Services API projects</h1><h2 id="Setup-IDE-and-Build"><a href="#Setup-IDE-and-Build" class="headerlink" title="Setup IDE and Build"></a>Setup IDE and Build</h2><ol>
+<li><p>Android Studio with integrated Android SDK including the SDK tools</p>
+</li>
+<li><p>The Google Play Services SDK. You can get this from the extras portion of the Android SDK Manager in Android Studio &gt; Tools.</p>
+</li>
+</ol>
+<h2 id="Setup-Libs"><a href="#Setup-Libs" class="headerlink" title="Setup Libs"></a>Setup Libs</h2><ul>
+<li><p>maps lib and fine perms</p>
+<p>  // dependencies node of the build.gradle<br>  compile ‘com.google.android.gms:play-services-maps:7.8.0’<br>  compile ‘com.google.android.gms:play-services-location:7.8.0’</p>
+</li>
+<li><p>Add support and play service libraries as dependencies .. </p>
+<p>  dependencies {</p>
+<pre><code>compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])
+compile &apos;com.android.support:appcompat-v7:22.0.0&apos;
+compile &apos;com.google.android.gms:play-services:7.3.0&apos;
+</code></pre><p>  }</p>
+<p>// To find the correct version number do following (on Mac)<br>cd to SDK directory (~/Library/sdk/extras/google/ on Mac)<br>cd m2repository/com/google/android/gms/play-services<br>ls -la </p>
+<pre><code>...
+9.6.0/
+9.6.1/
+9.8.0/ &lt;-- latest one is the one to use as artificat/version
+</code></pre></li>
+</ul>
+<ul>
+<li>Do the gradle sync in the IDE (or Android tools/sync)</li>
+</ul>
+<h2 id="Setup-Permissions"><a href="#Setup-Permissions" class="headerlink" title="Setup Permissions"></a>Setup Permissions</h2><p>. Android Manifest - absolutely need fine location access, the coarse and internet permissions are built into the Play services library and merged in.</p>
+<pre><code>// Fine location permission before &lt;/manifest&gt; .. tag
+&lt;uses-permission android:name=&quot;android.permission.ACCESS_FINE_LOCATION&quot; /&gt;
+
+//Add just above the closing &lt;/activity&gt; tag.
+&lt;meta-data
+    android:name=&quot;com.google.android.gms.version&quot;
+    android:value=&quot;@integer/google_play_services_version&quot; /&gt;
+</code></pre><h3 id="External-storage-permission"><a href="#External-storage-permission" class="headerlink" title="External storage permission"></a>External storage permission</h3><p>If you’re targeting version 8.3 or later of the Google Play services SDK, you no longer need the WRITE_EXTERNAL_STORAGE permission to use the Google Maps Android API.</p>
+<p>If you’re targeting earlier versions of the Google Play services SDK, you must request the android.permission.WRITE_EXTERNAL_STORAGE permission.</p>
+<pre><code>&lt;uses-permission
+    android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+</code></pre><ul>
+<li>Note: If your app is targeting API level 23 (Android 6.0), which requires the use of runtime permissions, you should target version 8.3 or later of the Google Play services SDK.</li>
+</ul>
+<h3 id="OpenGL-AUTOMATICALLY-MERGED-FROM-GPLAY-SERVICES"><a href="#OpenGL-AUTOMATICALLY-MERGED-FROM-GPLAY-SERVICES" class="headerlink" title="OpenGL - AUTOMATICALLY MERGED FROM GPLAY SERVICES"></a>OpenGL - AUTOMATICALLY MERGED FROM GPLAY SERVICES</h3><ul>
+<li><p>Specify requirement for OpenGL ES version 2. The Google Maps Android API uses OpenGL ES version 2 to render the map. The following setting is defined in the Google Play services manifest, and is automatically merged into your app’s manifest at build time. You don’t need to add it explicitly to your manifest: This notifies external services of the requirement. In particular, it prevents Google Play Store from displaying your app on devices that don’t support OpenGL ES version 2.</p>
+<p>  // &lt;manifest ..<br>  // IS openGL needed? other newer maps tutes did NOT declare this</p>
+  <uses-feature android:glesversion="0x00020000" android:required="true">
+
+
+</uses-feature></li>
+</ul>
+<h2 id="Setup-Google-Maps-Key-Simple"><a href="#Setup-Google-Maps-Key-Simple" class="headerlink" title="Setup Google Maps Key - Simple"></a>Setup Google Maps Key - Simple</h2><h2 id="Setup-GPlay-Services-API-Keys-More-Involved"><a href="#Setup-GPlay-Services-API-Keys-More-Involved" class="headerlink" title="Setup GPlay Services - API Keys - More Involved"></a>Setup GPlay Services - API Keys - More Involved</h2><ul>
+<li><a href="https://developers.google.com/maps/documentation/android-api/signup" target="_blank" rel="external">https://developers.google.com/maps/documentation/android-api/signup</a></li>
+</ul>
+<ul>
+<li>eg <a href="https://code.tutsplus.com/tutorials/getting-started-with-google-maps-for-android-basics--cms-24635" target="_blank" rel="external">https://code.tutsplus.com/tutorials/getting-started-with-google-maps-for-android-basics--cms-24635</a><br>see: <a href="https://developers.google.com/maps/documentation/android-api/signup" target="_blank" rel="external">https://developers.google.com/maps/documentation/android-api/signup</a></li>
+</ul>
+<ul>
+<li>Just go to console.developers.google.com, and create a new project with some name<br>Enable Google Maps v2 API for that project, <ul>
+<li>Create Credentials .. get the API key for Android </li>
+<li>NEED a separate key .. if doing multiple platforms (webServer, webClientJS,ios,)</li>
+<li>that will be pasted as Meta data for Android manifest</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>ADVANCED add restrictions so people don’t eat up your key data .. </p>
+<ul>
+<li><p>// application</p>
+<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version">
+
+<meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_api_key">
+</meta-data></meta-data></li>
+<li><p>string google_maps_key to the gradle property GOOGLE_MAPS_API_KEY:</p>
+<p>resValue “string”, “google_maps_key”,</p>
+<pre><code>(project.findProperty(&quot;GOOGLE_MAPS_API_KEY&quot;) ?: &quot;&quot;)
+</code></pre></li>
+</ul>
+</li>
+<li><p>Google play services version is different for different devices</p>
+<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+<h2 id="Attribution-Needs"><a href="#Attribution-Needs" class="headerlink" title="Attribution Needs"></a>Attribution Needs</h2><p>If you use the Google Maps Android API in your application, you must include the Google Play Services attribution text as part of a “Legal Notices” section in your application. Including legal notices as an independent menu item, or as part of an “About” menu item, is recommended.<br>The attribution text is available by making a call to<br>     GoogleApiAvailability.getOpenSourceSoftwareLicenseInfo.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://pradeepkr103.github.io/android/31a Setup Google Play Services API projects/" data-id="ciwyar8y20004fvspqks2l7hn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/android/31h Google Places, Local Based/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Recipes-ViewManager/">Android, Recipes, ViewManager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ecommerce-Posts-Directory/">Ecommerce, Posts Directory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElasticSearch-Logstash-Kibana-ELK-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">ElasticSearch, Logstash, Kibana, ELK, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Google-Analytics-Web-Frontend/">Google, Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Google-Yahoo-Bing-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Google, Yahoo, Bing, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mobile-Analytics-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Mobile Analytics, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Personalizing-Web-Experience-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/">Personalizing, Web Experience, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Piwik-Google-Analytics-Web-Frontend/">Piwik, Google, Analytics, Web, Frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/savinglives-hackathons-wins/">savinglives, hackathons, wins</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android-Recipes-ViewManager/" style="font-size: 10px;">Android, Recipes, ViewManager</a> <a href="/tags/Ecommerce-Posts-Directory/" style="font-size: 10px;">Ecommerce, Posts Directory</a> <a href="/tags/ElasticSearch-Logstash-Kibana-ELK-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 10px;">ElasticSearch, Logstash, Kibana, ELK, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 20px;">Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Google-Analytics-Web-Frontend/" style="font-size: 10px;">Google, Analytics, Web, Frontend</a> <a href="/tags/Google-Yahoo-Bing-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 20px;">Google, Yahoo, Bing, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Mobile-Analytics-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 10px;">Mobile Analytics, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Personalizing-Web-Experience-Google-Analytics-Search-Engines-SEO-Dashboards-Auto-Analytics-Web-Frontend/" style="font-size: 10px;">Personalizing, Web Experience, Google Analytics, Search Engines, SEO, Dashboards, Auto-Analytics, Web, Frontend</a> <a href="/tags/Piwik-Google-Analytics-Web-Frontend/" style="font-size: 10px;">Piwik, Google, Analytics, Web, Frontend</a> <a href="/tags/savinglives-hackathons-wins/" style="font-size: 10px;">savinglives, hackathons, wins</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/android/31a Setup Google Play Services API projects/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31h Google Places, Local Based/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31c Android Location,GPS Trackers and Map Tracking/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31g Android Map Paths, Directions, GPS Trackers/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/android/31b Android Maps v2 Markers, Current Location/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Pradeep Kumar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
